@@ -12,8 +12,8 @@
     createSheetBtn.addEventListener("click", async () => 
         createSheetCanvas(
             await createButtonCanvas( yearInput.value ),
-            4000,
-            6000
+            4517,
+            6050
         ).toBlob( async blob => downloadBlob( await changeDpiBlob( blob, DPI), "button_sheet_" + yearInput.value + ".png" ) )
     );
 
