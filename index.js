@@ -4,35 +4,16 @@ const DPI = 600;
 
 createButtonBtn.addEventListener("click", async () => {
     const btnCanvas = await createButtonCanvas( yearInput.value );
-    btnCanvas.toBlob( blob => console.log(blob) || changeDpiBlob( blob, DPI).then( blob => {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        document.body.appendChild(a);
-        a.style = "display: none";
-        a.href = url;
-        a.download = "button_" + yearInput.value + ".png";
-        a.click();
-        URL.revokeObjectURL(url);
-    } ) );
-    
+    btnCanvas.toBlob( async blob => downloadBlob( await changeDpiBlob( blob, DPI), "button_" + yearInput.value + ".png" ) );
 });
 
-createSheetBtn.addEventListener("click", async () => {
-    const btnCanvas = await createButtonCanvas( yearInput.value );
-    const sheetCanvas = createSheetCanvas( btnCanvas, 4000, 6000 );
-    
-    sheetCanvas.toBlob( async blob => {
-        const blob2 = await changeDpiBlob(blob, DPI);
-        const url = URL.createObjectURL(blob2);
-        const a = document.createElement("a");
-        document.body.appendChild(a);
-        a.style = "display: none";
-        a.href = url;
-        a.download = "button_sheet_" + yearInput.value + ".png";
-        a.click();
-        URL.revokeObjectURL(url);
-    });
-});
+createSheetBtn.addEventListener("click", async () => 
+    createSheetCanvas(
+        await createButtonCanvas( yearInput.value ),
+        4000,
+        6000
+    ).toBlob( async blob => downloadBlob( await changeDpiBlob( blob, DPI), "button_sheet_" + yearInput.value + ".png" ) )
+);
 
 yearInput.value = (new Date()).getFullYear();
 
@@ -126,4 +107,15 @@ const createSheetCanvas = ( buttonCanvas, width, height ) => {
     buttonPositionsByWidth( { width: buttonCanvas.width, height: buttonCanvas.height }, { width, height } ).forEach( ([x,y ]) => sheetCtx.drawImage(buttonCanvas, x,y) )
 
     return sheetCanvas;
+};
+
+const downloadBlob = ( blob, filename) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
 };
