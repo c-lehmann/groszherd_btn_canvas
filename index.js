@@ -28,19 +28,20 @@
 
             const ctx = canvas.getContext("2d");
             ctx.drawImage(img,0,0);
-            ctx.font         = '312px CoelnischeCurrentFraktur';
+            ctx.font         = '384px CoelnischeCurrentFraktur';
             ctx.fillStyle = 'blue';
             
             const leftDigits = year.substring(0,2);
             const rightDigits = year.substring(2);
 
             const measureLeftDigits = ctx.measureText(leftDigits);
+            const measureRightDigits = ctx.measureText(rightDigits);
 
             ctx.fillStyle = "white";
-            ctx.fillText(leftDigits, this.width / 2 - measureLeftDigits.width, this.height / 2);
+            ctx.fillText(leftDigits, this.width / 2 - measureLeftDigits.width, this.height / 2 + measureLeftDigits.fontBoundingBoxDescent);
 
             ctx.fillStyle = "#F54718";
-            ctx.fillText(rightDigits, this.width / 2, this.height / 2);
+            ctx.fillText(rightDigits, this.width / 2, this.height / 2 + measureRightDigits.fontBoundingBoxDescent);
 
             resolve(canvas);
         };
