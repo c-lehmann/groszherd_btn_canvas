@@ -47,7 +47,14 @@ buttonsForm.onsubmit = e => {
 
         buttonPositionsByWidth( { width: this.width, height: this.height }, { width: 4517, height: 6050 } ).forEach( ([x,y ]) => sheetCtx.drawImage(canvas, x,y) )
     
-        sheetCanvas.toBlob( (blob) => {
+        sheetCanvas.toBlob( blob => {
+            const url = URL.createObjectURL(blob);
+            const sheetPreviewEl = document.getElementById("sheet-preview");
+            const onLoad = () => {
+                URL.revokeObjectURL(url);
+                sheetPreviewEl.removeEventListener("load", onLoad);
+            }
+            sheetPreviewEl.addEventListener("load", onLoad);
             document.getElementById("sheet-preview").src = URL.createObjectURL(blob);
         }  );
     };
