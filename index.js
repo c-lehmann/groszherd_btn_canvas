@@ -1,6 +1,7 @@
 const [buttonsForm] = document.forms;
 const [yearInput, submitButton] = buttonsForm;
 const wrapperEl = document.getElementById("wrapper")
+const DPI = 600;
 
 yearInput.value = (new Date()).getFullYear();
 
@@ -37,7 +38,7 @@ buttonsForm.onsubmit = e => {
         ctx.fillText(rightDigits, this.width / 2, this.height / 2);
         ctx.save();
 
-        document.getElementById("preview-img").src = changeDpiDataUrl(canvas.toDataURL(), 600);
+        document.getElementById("preview-img").src = changeDpiDataUrl(canvas.toDataURL(), DPI);
 
         const sheetCanvas = document.createElement("canvas");
         sheetCanvas.width = 4517;
@@ -48,14 +49,16 @@ buttonsForm.onsubmit = e => {
         buttonPositionsByWidth( { width: this.width, height: this.height }, { width: 4517, height: 6050 } ).forEach( ([x,y ]) => sheetCtx.drawImage(canvas, x,y) )
     
         sheetCanvas.toBlob( blob => {
-            const url = URL.createObjectURL(blob);
-            const sheetPreviewEl = document.getElementById("sheet-preview");
-            const onLoad = () => {
-                URL.revokeObjectURL(url);
-                sheetPreviewEl.removeEventListener("load", onLoad);
-            }
-            sheetPreviewEl.addEventListener("load", onLoad);
-            document.getElementById("sheet-preview").src = URL.createObjectURL(blob);
+            changeDpiBlob(blob, DPI).then( blob2 => {
+                const url = URL.createObjectURL(blob2);
+                const sheetPreviewEl = document.getElementById("sheet-preview");
+                const onLoad = () => {
+                    URL.revokeObjectURL(url);
+                    sheetPreviewEl.removeEventListener("load", onLoad);
+                }
+                sheetPreviewEl.addEventListener("load", onLoad);
+                document.getElementById("sheet-preview").src = URL.createObjectURL(blob2);
+            } );
         }  );
     };
     img.src = './plain_button.png';
