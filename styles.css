@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Sedgwick+Ave&display=swap');
+
+@font-face {
+    font-family: 'CoelnischeCurrentFraktur';
+    src:url('CoelnischeCurrentFraktur.ttf.woff') format('woff'),
+        url('CoelnischeCurrentFraktur.ttf.svg#CoelnischeCurrentFraktur') format('svg'),
+        url('CoelnischeCurrentFraktur.ttf.eot'),
+        url('CoelnischeCurrentFraktur.ttf.eot?#iefix') format('embedded-opentype'); 
+    font-weight: normal;
+    font-style: normal;
+}
