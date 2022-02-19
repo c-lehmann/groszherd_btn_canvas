@@ -28,7 +28,7 @@
 
             const ctx = canvas.getContext("2d");
             ctx.drawImage(img,0,0);
-            ctx.font         = '384px CoelnischeCurrentFraktur';
+            ctx.font = '288pt CoelnischeCurrentFraktur';
             ctx.fillStyle = 'blue';
             
             const leftDigits = year.substring(0,2);
